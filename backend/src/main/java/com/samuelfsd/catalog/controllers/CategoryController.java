@@ -1,6 +1,6 @@
 package com.samuelfsd.catalog.controllers;
 
-import com.samuelfsd.catalog.entities.Category;
+import com.samuelfsd.catalog.dto.CategoryDTO;
 import com.samuelfsd.catalog.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +18,8 @@ public class CategoryController {
     @Autowired
     private CategoryService service;
     @GetMapping()
-    public ResponseEntity<List<Category>> findAllCategories(){
-        List<Category> listCategories = service.findAllCategories();
+    public ResponseEntity<List<CategoryDTO>> findAllCategories(){
+        List<CategoryDTO> listCategories = service.findAllCategories();
 
         return ResponseEntity.ok().body(listCategories);
     }
