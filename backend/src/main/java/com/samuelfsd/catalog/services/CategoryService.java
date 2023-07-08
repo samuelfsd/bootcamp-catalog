@@ -2,9 +2,11 @@ package com.samuelfsd.catalog.services;
 
 import com.samuelfsd.catalog.dto.CategoryDTO;
 import com.samuelfsd.catalog.entities.Category;
+import com.samuelfsd.catalog.exceptions.EntityNotFoundException;
 import com.samuelfsd.catalog.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +27,7 @@ public class CategoryService {
 
     public CategoryDTO findCategoryById(Long id){
         Optional<Category> obj = repository.findById(id);
-        Category category = obj.get();
+        Category category = obj.orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada"));
 
         return new CategoryDTO(category);
     }
