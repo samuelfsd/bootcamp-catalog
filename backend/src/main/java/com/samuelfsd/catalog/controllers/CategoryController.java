@@ -48,4 +48,11 @@ public class CategoryController {
 
         return ResponseEntity.created(uri).body(dto);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<CategoryDTO> deleteCategory(@PathVariable Long id) {
+        service.deleteCategory(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -2,9 +2,12 @@ package com.samuelfsd.catalog.services;
 
 import com.samuelfsd.catalog.dto.CategoryDTO;
 import com.samuelfsd.catalog.entities.Category;
+import com.samuelfsd.catalog.exceptions.DatabaseException;
 import com.samuelfsd.catalog.exceptions.ResourceNotFoundException;
 import com.samuelfsd.catalog.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 
@@ -57,8 +60,20 @@ public class CategoryService {
 
             return new CategoryDTO(entity);
 
-        } catch (EntityNotFoundException err) {
+        } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Não existe nenhuma categoria com este ID");
         }
+    }
+
+    public void deleteCategory(Long id) {
+        try {
+            repository.deleteById(id);
+
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException("Não existe nenhuma categoria com este ID");
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Violação de integridade");
+        }
+
     }
 }
