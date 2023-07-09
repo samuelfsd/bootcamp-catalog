@@ -1,4 +1,4 @@
-package com.samuelfsd.catalog.dto;
+package com.samuelfsd.catalog.dtos;
 
 import com.samuelfsd.catalog.entities.Category;
 

@@ -1,6 +1,6 @@
 package com.samuelfsd.catalog.services;
 
-import com.samuelfsd.catalog.dto.CategoryDTO;
+import com.samuelfsd.catalog.dtos.CategoryDTO;
 import com.samuelfsd.catalog.entities.Category;
 import com.samuelfsd.catalog.exceptions.DatabaseException;
 import com.samuelfsd.catalog.exceptions.ResourceNotFoundException;
