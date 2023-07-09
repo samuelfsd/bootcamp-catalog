@@ -2,12 +2,14 @@ package com.samuelfsd.catalog.services;
 
 import com.samuelfsd.catalog.dto.CategoryDTO;
 import com.samuelfsd.catalog.entities.Category;
-import com.samuelfsd.catalog.exceptions.EntityNotFoundException;
+import com.samuelfsd.catalog.exceptions.ResourceNotFoundException;
 import com.samuelfsd.catalog.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,6 +19,8 @@ public class CategoryService {
 
     @Autowired
     private CategoryRepository repository;
+
+    @Transactional
     public List<CategoryDTO> findAllCategories(){
         List<Category> list = repository.findAll();
 
@@ -25,13 +29,15 @@ public class CategoryService {
         return listCategoriesDTO;
     }
 
+    @Transactional
     public CategoryDTO findCategoryById(Long id){
         Optional<Category> obj = repository.findById(id);
-        Category category = obj.orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada"));
+        Category category = obj.orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada"));
 
         return new CategoryDTO(category);
     }
 
+    @Transactional
     public CategoryDTO createCategory(CategoryDTO dto) {
         Category entity = new Category();
         entity.setName(dto.getName());
@@ -39,5 +45,20 @@ public class CategoryService {
         entity = repository.save(entity);
 
         return new CategoryDTO(entity);
+    }
+
+    @Transactional
+    public CategoryDTO updateCategoryById(Long id, CategoryDTO dto) {
+        try {
+            Category entity = repository.getOne(id);
+            entity.setName(dto.getName());
+
+            entity = repository.save(entity);
+
+            return new CategoryDTO(entity);
+
+        } catch (EntityNotFoundException err) {
+            throw new ResourceNotFoundException("Não existe nenhuma categoria com este ID");
+        }
     }
 }
