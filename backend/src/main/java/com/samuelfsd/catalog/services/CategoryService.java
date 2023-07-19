@@ -8,14 +8,14 @@ import com.samuelfsd.catalog.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
@@ -24,10 +24,10 @@ public class CategoryService {
     private CategoryRepository repository;
 
     @Transactional
-    public List<CategoryDTO> findAllCategories(){
-        List<Category> list = repository.findAll();
+    public Page<CategoryDTO> findAllPaged(PageRequest pageRequest){
+        Page<Category> list = repository.findAll(pageRequest);
 
-        List<CategoryDTO> listCategoriesDTO = list.stream().map(category -> new CategoryDTO(category)).collect(Collectors.toList());
+        Page<CategoryDTO> listCategoriesDTO = list.map(category -> new CategoryDTO(category));
 
         return listCategoriesDTO;
     }
