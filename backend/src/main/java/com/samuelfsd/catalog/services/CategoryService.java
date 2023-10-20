@@ -27,7 +27,7 @@ public class CategoryService {
     public Page<CategoryDTO> findAllPaged(PageRequest pageRequest){
         Page<Category> list = repository.findAll(pageRequest);
 
-        Page<CategoryDTO> listCategoriesDTO = list.map(category -> new CategoryDTO(category));
+        Page<CategoryDTO> listCategoriesDTO = list.map(CategoryDTO::new);
 
         return listCategoriesDTO;
     }
